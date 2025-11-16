@@ -2,11 +2,11 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package GUI;
+package com.mycompany.proyectou3aalg.view;
 
-import implementaciones.Arista;
-import implementaciones.Ciudad;
-import implementaciones.Grafo;
+import com.mycompany.proyectou3aalg.util.Arista;
+import com.mycompany.proyectou3aalg.util.Ciudad;
+import com.mycompany.proyectou3aalg.util.Grafo;
 import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Dimension;

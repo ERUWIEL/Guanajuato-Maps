@@ -1,13 +1,9 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- */
-
 package com.mycompany.proyectou3aalg;
 
-import GUI.GrafoPanel;
-import GUI.MainUI;
-import implementaciones.Ciudad;
-import implementaciones.Grafo;
+import com.mycompany.proyectou3aalg.view.GrafoPanel;
+import com.mycompany.proyectou3aalg.view.MainUI;
+import com.mycompany.proyectou3aalg.util.Ciudad;
+import com.mycompany.proyectou3aalg.util.Grafo;
 import java.awt.BorderLayout;
 import javax.swing.UIManager;
 
