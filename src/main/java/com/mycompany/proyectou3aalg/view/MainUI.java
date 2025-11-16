@@ -1,14 +1,8 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
- */
 package com.mycompany.proyectou3aalg.view;
 
+import com.mycompany.proyectou3aalg.algorithms.BFS;
 import com.mycompany.proyectou3aalg.util.Ciudad;
 import com.mycompany.proyectou3aalg.util.Grafo;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
-import java.awt.RenderingHints;
 import javax.swing.*;
 import java.awt.*;
 
@@ -17,9 +11,9 @@ import java.awt.*;
  * @author Elite
  */
 public class MainUI extends javax.swing.JFrame {
-    
+
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(MainUI.class.getName());
-    
+    private Grafo grafoActual;
 
     /**
      * Creates new form MainUI
@@ -27,8 +21,6 @@ public class MainUI extends javax.swing.JFrame {
     public MainUI() {
         initComponents();
         setLayout(new BorderLayout());
-        
-        
     }
 
     /**
@@ -59,6 +51,11 @@ public class MainUI extends javax.swing.JFrame {
         subMenuRecorridos.setText("Recorridos");
 
         btnrecorridoBFS.setText("BFS");
+        btnrecorridoBFS.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnrecorridoBFSActionPerformed(evt);
+            }
+        });
         subMenuRecorridos.add(btnrecorridoBFS);
 
         btnRecorridoDFS.setText("DFS");
@@ -118,7 +115,44 @@ public class MainUI extends javax.swing.JFrame {
     private void btnRecorridoDFSActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRecorridoDFSActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_btnRecorridoDFSActionPerformed
-    
+
+    private void btnrecorridoBFSActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnrecorridoBFSActionPerformed
+        if (grafoActual == null) {
+            JOptionPane.showMessageDialog(this, "No hay grafo inicializado", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        String[] nombresCiudades = grafoActual.getCiudades().stream()
+                .map(c -> c.getNombre())
+                .toArray(String[]::new);
+
+        String ciudadSeleccionada = (String) JOptionPane.showInputDialog(
+                this,
+                "Selecciona la ciudad inicial para el recorrido BFS:",
+                "Recorrido BFS",
+                JOptionPane.QUESTION_MESSAGE,
+                null,
+                nombresCiudades,
+                nombresCiudades[0]
+        );
+
+        if (ciudadSeleccionada != null) {
+            Ciudad inicio = grafoActual.getCiudades().stream()
+                    .filter(c -> c.getNombre().equals(ciudadSeleccionada))
+                    .findFirst()
+                    .orElse(null);
+
+            if (inicio != null) {
+                // Ejecutar BFS
+                BFS bfs = new BFS(grafoActual);
+                BFS.ResultadoBFS resultado = bfs.recorridoDetallado(inicio);
+
+                // Mostrar resultados
+                mostrarResultadosBFS(resultado);
+            }
+        }
+    }//GEN-LAST:event_btnrecorridoBFSActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenuItem btnMST;
     private javax.swing.JMenuItem btnRecorridoDFS;
@@ -132,11 +166,7 @@ public class MainUI extends javax.swing.JFrame {
     private javax.swing.JMenu subMenuRecorridos;
     // End of variables declaration//GEN-END:variables
 
-    
-    
-    public Grafo inicializarCiudadesYGrafo(String[] nombres, int[][] matrizAristas){
-       
-        // Crea un nuevo grafo
+    public Grafo inicializarCiudadesYGrafo(String[] nombres, int[][] matrizAristas) {
         Grafo grafo = new Grafo();
         //Crea un arreglo de ciudades
         Ciudad[] ciudades = new Ciudad[30];
@@ -155,17 +185,29 @@ public class MainUI extends javax.swing.JFrame {
                 }
             }
         }
-
+        this.grafoActual = grafo;
         return grafo;
-        
     }
-    
-    
-    
+
+    private void mostrarResultadosBFS(BFS.ResultadoBFS resultado) {
+        JDialog dialog = new JDialog(this, "Resultados BFS", true);
+        dialog.setSize(500, 600);
+        dialog.setLocationRelativeTo(this);
+
+        JTextArea textArea = new JTextArea();
+        textArea.setEditable(false);
+        textArea.setFont(new Font("Monospaced", Font.PLAIN, 12));
+        textArea.setText(resultado.toString());
+
+        JScrollPane scrollPane = new JScrollPane(textArea);
+        dialog.add(scrollPane);
+        dialog.setVisible(true);
+    }
+
     //Genera posiciones para el Jframe que simulan la geografía del estado de Guanajuato
-    public int[][] generarPosiciones(double [][] coordenadas){
+    public int[][] generarPosiciones(double[][] coordenadas) {
         //Convertir coordenadas geograficas a pixeles
-        int [][] posiciones = new int[coordenadas.length][2];
+        int[][] posiciones = new int[coordenadas.length][2];
         double minLat = 20.0, maxLat = 21.5;
         double minLon = -102.0, maxLon = -100.3;
 
@@ -177,7 +219,7 @@ public class MainUI extends javax.swing.JFrame {
             posiciones[i][0] = x;
             posiciones[i][1] = y;
         }
-        
+
         //Aplicar separación minima entre nodos 
         for (int i = 0; i < posiciones.length; i++) {
             for (int j = i + 1; j < posiciones.length; j++) {
@@ -190,15 +232,8 @@ public class MainUI extends javax.swing.JFrame {
                 }
             }
         }
-        
-        
-        
+
         return posiciones;
     }
-    
-    
-      
-
-
 
 }
