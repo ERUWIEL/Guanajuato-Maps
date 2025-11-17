@@ -4,7 +4,7 @@
  */
 package com.mycompany.proyectou3aalg.view;
 
-import com.mycompany.proyectou3aalg.algorithms.EstadoDFS;
+import com.mycompany.proyectou3aalg.util.EstadoDFS;
 import com.mycompany.proyectou3aalg.util.Arista;
 import com.mycompany.proyectou3aalg.util.Ciudad;
 import com.mycompany.proyectou3aalg.util.Grafo;
@@ -15,7 +15,9 @@ import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
+import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import javax.swing.JPanel;
 
 /**
@@ -27,6 +29,7 @@ public class GrafoPanel extends JPanel implements VisualizadorGrafo {
     private Map<Ciudad, EstadoDFS> estadosDFS = null;
     private Grafo grafo;
     private int[][] posiciones;
+    private Set<Arista> aristasKruskal = null;
 
     public GrafoPanel(Grafo grafo, int[][] posiciones) {
         this.grafo = grafo;
@@ -41,6 +44,16 @@ public class GrafoPanel extends JPanel implements VisualizadorGrafo {
     
     public void restaurarColores() {
         this.estadosDFS = null;
+        repaint();
+    }
+    
+    public void mostrarKruskal(Set<Arista> mst) {
+        this.aristasKruskal = mst;
+        repaint();
+    }
+
+    public void restaurarKruskal() {
+        this.aristasKruskal = null;
         repaint();
     }
     
@@ -120,6 +133,25 @@ public class GrafoPanel extends JPanel implements VisualizadorGrafo {
             g2.setColor(Color.GRAY);
         }
 
+        //Aristas mst Kruskal
+        if(aristasKruskal!=null){
+            for (Arista a : grafo.getAristas()) {
+                int i = grafo.getCiudades().indexOf(a.getOrigen());
+                int j = grafo.getCiudades().indexOf(a.getDestino());
+                int x1 = posiciones[i][0], y1 = posiciones[i][1];
+                int x2 = posiciones[j][0], y2 = posiciones[j][1];
+
+                if (aristasKruskal != null && aristasKruskal.contains(a)) {
+                    g2.setColor(Color.BLACK);
+                    ((Graphics2D) g2).setStroke(new BasicStroke(3));
+                } else {
+                    g2.setColor(Color.GRAY);
+                    ((Graphics2D) g2).setStroke(new BasicStroke(1));
+                }
+
+                g2.drawLine(x1, y1, x2, y2);
+            }
+        }
         
         //Dibujar Nodos
         for (int i = 0; i < grafo.getCiudades().size(); i++) {
@@ -150,6 +182,10 @@ public class GrafoPanel extends JPanel implements VisualizadorGrafo {
             g2.setFont(new Font("SansSerif", Font.PLAIN, 10));
             g2.drawString(ciudad.getNombre(), x - 10, y + 18);
         }
+        
+        
+        
+        
     }
     
     

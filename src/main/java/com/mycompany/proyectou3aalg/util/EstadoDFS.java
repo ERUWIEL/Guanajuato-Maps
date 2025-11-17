@@ -2,7 +2,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package com.mycompany.proyectou3aalg.algorithms;
+package com.mycompany.proyectou3aalg.util;
 
 import com.mycompany.proyectou3aalg.util.Ciudad;
 

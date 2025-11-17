@@ -4,6 +4,7 @@
  */
 package com.mycompany.proyectou3aalg.algorithms;
 
+import com.mycompany.proyectou3aalg.util.EstadoDFS;
 import com.mycompany.proyectou3aalg.util.Arista;
 import com.mycompany.proyectou3aalg.util.Ciudad;
 import com.mycompany.proyectou3aalg.util.Grafo;
@@ -79,7 +80,7 @@ public class DFSRecorrido {
         estadoU.color = EstadoDFS.Color.GRAY;
         ordenDescubrimiento.add(u); //Lista de nodos descubiertos en orden
         visualizador.actualizarColores(estados); //GUI
-        esperar(250);
+        esperar(350);
         
         
             for (Arista a : grafo.getAristas()) {

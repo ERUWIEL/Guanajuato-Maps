@@ -5,7 +5,7 @@
 package com.mycompany.proyectou3aalg.view;
 
 import com.mycompany.proyectou3aalg.util.Ciudad;
-import com.mycompany.proyectou3aalg.algorithms.EstadoDFS;
+import com.mycompany.proyectou3aalg.util.EstadoDFS;
 import java.util.Map;
 
 /**

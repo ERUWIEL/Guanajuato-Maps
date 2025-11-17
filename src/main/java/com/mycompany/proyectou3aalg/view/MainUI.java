@@ -2,6 +2,7 @@ package com.mycompany.proyectou3aalg.view;
 
 import com.mycompany.proyectou3aalg.algorithms.BFS;
 import com.mycompany.proyectou3aalg.algorithms.DFSRecorrido;
+import com.mycompany.proyectou3aalg.algorithms.Kruskal_MST_Recorrido;
 import com.mycompany.proyectou3aalg.util.Ciudad;
 import com.mycompany.proyectou3aalg.util.Grafo;
 import javax.swing.*;
@@ -71,6 +72,11 @@ public class MainUI extends javax.swing.JFrame {
         menuFuncionalidad.add(subMenuRecorridos);
 
         btnMST.setText("MST");
+        btnMST.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnMSTActionPerformed(evt);
+            }
+        });
         menuFuncionalidad.add(btnMST);
 
         btnRutaMásCorta.setText("Ruta más corta");
@@ -192,6 +198,17 @@ public class MainUI extends javax.swing.JFrame {
             }
         }
     }//GEN-LAST:event_btnrecorridoBFSActionPerformed
+
+    private void btnMSTActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMSTActionPerformed
+        // TODO add your handling code here:
+        //Kruskal MST
+        Kruskal_MST_Recorrido mstk = new Kruskal_MST_Recorrido(grafoActual, panel);
+        mstk.ejecutar();
+        
+        
+        
+        
+    }//GEN-LAST:event_btnMSTActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenuItem btnMST;
