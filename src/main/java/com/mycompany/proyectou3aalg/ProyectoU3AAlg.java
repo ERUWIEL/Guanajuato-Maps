@@ -12,8 +12,11 @@ import javax.swing.UIManager;
  * @author Elite
  */
 public class ProyectoU3AAlg {
+    
+    
 
       public static void main(String args []){
+          
         //Estilo windows 98
         try {
             UIManager.setLookAndFeel("javax.swing.plaf.metal.MetalLookAndFeel");
@@ -180,9 +183,11 @@ public class ProyectoU3AAlg {
             };
             
             
+            
             Grafo grafo = menu.inicializarCiudadesYGrafo(nombres, matrizAristas);
             int [][] posiciones = menu.generarPosiciones(coordenadas);
             GrafoPanel panel = new GrafoPanel(grafo, posiciones);
+            menu.setPanel(panel);
             menu.add(panel, BorderLayout.CENTER);
             menu.pack();
             

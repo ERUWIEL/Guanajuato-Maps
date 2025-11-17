@@ -1,6 +1,7 @@
 package com.mycompany.proyectou3aalg.view;
 
 import com.mycompany.proyectou3aalg.algorithms.BFS;
+import com.mycompany.proyectou3aalg.algorithms.DFSRecorrido;
 import com.mycompany.proyectou3aalg.util.Ciudad;
 import com.mycompany.proyectou3aalg.util.Grafo;
 import javax.swing.*;
@@ -14,6 +15,7 @@ public class MainUI extends javax.swing.JFrame {
 
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(MainUI.class.getName());
     private Grafo grafoActual;
+    private GrafoPanel panel;
 
     /**
      * Creates new form MainUI
@@ -114,6 +116,44 @@ public class MainUI extends javax.swing.JFrame {
 
     private void btnRecorridoDFSActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRecorridoDFSActionPerformed
         // TODO add your handling code here:
+        
+        if (grafoActual == null) {
+            JOptionPane.showMessageDialog(this, "No hay grafo inicializado", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        String[] nombresCiudades = grafoActual.getCiudades().stream()
+                .map(c -> c.getNombre())
+                .toArray(String[]::new);
+
+        
+        String ciudadSeleccionada = (String) JOptionPane.showInputDialog(
+                this,
+                "Selecciona la ciudad inicial para el recorrido DFS:",
+                "Recorrido DFS",
+                JOptionPane.QUESTION_MESSAGE,
+                null,
+                nombresCiudades,
+                nombresCiudades[0]
+        );
+        
+        if (ciudadSeleccionada != null) {
+            Ciudad inicio = grafoActual.getCiudades().stream()
+                    .filter(c -> c.getNombre().equals(ciudadSeleccionada))
+                    .findFirst()
+                    .orElse(null);
+        
+            if (inicio != null) {
+                // Ejecutar BFS
+                DFSRecorrido dfs = new DFSRecorrido(grafoActual, panel);
+                dfs.ejecutarDesde(inicio);
+
+                
+            }
+        }
+
+      
+        
     }//GEN-LAST:event_btnRecorridoDFSActionPerformed
 
     private void btnrecorridoBFSActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnrecorridoBFSActionPerformed
@@ -179,7 +219,7 @@ public class MainUI extends javax.swing.JFrame {
         }
         //Ciclo Matriz de Adyacencias
         for (int i = 0; i < 30; i++) { //recorre ciudades origen
-            for (int j = i + 1; j < 30; j++) { // recorre ciudades destino
+            for (int j = 0; j < 30; j++) { // recorre ciudades destino
                 if (matrizAristas[i][j] > 0) {
                     grafo.agregarArista(ciudades[i], ciudades[j], matrizAristas[i][j]);
                 }
@@ -236,4 +276,13 @@ public class MainUI extends javax.swing.JFrame {
         return posiciones;
     }
 
+//    public GrafoPanel getPanel() {
+//        return panel;
+//    }
+    
+    public void setPanel(GrafoPanel panel){
+        this.panel = panel;
+    }
+
+    
 }
