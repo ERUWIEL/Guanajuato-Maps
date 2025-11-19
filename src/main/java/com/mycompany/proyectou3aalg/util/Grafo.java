@@ -12,9 +12,9 @@ import java.util.ArrayList;
  * @author Elite
  */
 public class Grafo {
-    
-   private List<Ciudad> ciudades;
-   private List<Arista> aristas;
+
+    private List<Ciudad> ciudades;
+    private List<Arista> aristas;
 
     public Grafo() {
         ciudades = new ArrayList<>();
@@ -29,27 +29,34 @@ public class Grafo {
         aristas.add(new Arista(origen, destino, peso));
     }
 
-    
-    public List<Ciudad> getCiudades() { return ciudades; }
-    
-    
-    
-    public List<Arista> getAristas() { return aristas; }
-    
-    
+    public List<Ciudad> getCiudades() {
+        return ciudades;
+    }
+
+    public List<Arista> getAristas() {
+        return aristas;
+    }
+
     public List<Arista> getAdyacentes(Ciudad u) {
         List<Arista> adyacentes = new ArrayList<>();
         for (Arista a : aristas) {
-            if (a.getOrigen().equals(u)|| a.getDestino().equals(u)) {
+            if (a.getOrigen().equals(u) || a.getDestino().equals(u)) {
                 adyacentes.add(a); // grafo dirigido
-            }    
+            }
 //          } } else if (a.getDestino().equals(u)) {
 //                adyacentes.add(a); // grafo no dirigido
 //            }
         }
         return adyacentes;
     }
-    
-    
-    
+
+    public List<Arista> getAristasDesde(Ciudad c) {
+        List<Arista> resultado = new ArrayList<>();
+        for (Arista a : this.aristas) {
+            if (a.getOrigen().equals(c) || a.getDestino().equals(c)) {
+                resultado.add(a);
+            }
+        }
+        return resultado;
+    }
 }

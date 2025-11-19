@@ -198,12 +198,8 @@ public class MainUI extends javax.swing.JFrame {
     }//GEN-LAST:event_btnrecorridoBFSActionPerformed
 
     private void btnMSTActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMSTActionPerformed
-        // TODO add your handling code here:
-        //Kruskal MST
         Kruskal_MST_Recorrido mstk = new Kruskal_MST_Recorrido(grafoActual, panel);
         mstk.ejecutar();
-
-
     }//GEN-LAST:event_btnMSTActionPerformed
 
     private void btnRutaMásCortaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRutaMásCortaActionPerformed
@@ -324,10 +320,7 @@ public class MainUI extends javax.swing.JFrame {
 
         return posiciones;
     }
-
-//    public GrafoPanel getPanel() {
-//        return panel;
-//    }
+    
     public void setPanel(GrafoPanel panel) {
         this.panel = panel;
     }
