@@ -207,7 +207,6 @@ public class MainUI extends javax.swing.JFrame {
     }//GEN-LAST:event_btnMSTActionPerformed
 
     private void btnRutaMásCortaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRutaMásCortaActionPerformed
-        // TODO add your handling code here:
         if (grafoActual == null) {
             JOptionPane.showMessageDialog(this, "No hay grafo inicializado", "Error", JOptionPane.ERROR_MESSAGE);
             return;
@@ -217,6 +216,7 @@ public class MainUI extends javax.swing.JFrame {
                 .map(c -> c.getNombre())
                 .toArray(String[]::new);
 
+        // Selección de origen
         String ciudadInicio = (String) JOptionPane.showInputDialog(
                 this,
                 "Selecciona la ciudad inicial:",
@@ -228,11 +228,13 @@ public class MainUI extends javax.swing.JFrame {
         );
 
         if (ciudadInicio != null) {
+
             Ciudad origen = grafoActual.getCiudades().stream()
                     .filter(c -> c.getNombre().equals(ciudadInicio))
                     .findFirst()
                     .orElse(null);
 
+            // Selección de destino
             String ciudadDestino = (String) JOptionPane.showInputDialog(
                     this,
                     "Selecciona la ciudad destino:",
@@ -244,7 +246,7 @@ public class MainUI extends javax.swing.JFrame {
             );
 
             Ciudad destino = grafoActual.getCiudades().stream()
-                    .filter(c -> c.getNombre().equals(ciudadInicio))
+                    .filter(c -> c.getNombre().equals(ciudadDestino)) // ← CORRECTO
                     .findFirst()
                     .orElse(null);
 
@@ -252,9 +254,7 @@ public class MainUI extends javax.swing.JFrame {
                 DijkstraRecorrido dijkstra = new DijkstraRecorrido(grafoActual, panel, origen, destino);
                 dijkstra.ejecutarDijkstra();
             }
-
         }
-
     }//GEN-LAST:event_btnRutaMásCortaActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
