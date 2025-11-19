@@ -2,7 +2,6 @@ package com.mycompany.proyectou3aalg;
 
 import com.mycompany.proyectou3aalg.view.GrafoPanel;
 import com.mycompany.proyectou3aalg.view.MainUI;
-import com.mycompany.proyectou3aalg.util.Ciudad;
 import com.mycompany.proyectou3aalg.util.Grafo;
 import java.awt.BorderLayout;
 import javax.swing.UIManager;
@@ -11,7 +10,7 @@ import javax.swing.UIManager;
  *
  * @author Elite
  */
-public class ProyectoU3AAlg {
+public class App {
     
     
 

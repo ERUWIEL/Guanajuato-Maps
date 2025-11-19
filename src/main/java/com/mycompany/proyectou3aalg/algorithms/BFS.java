@@ -1,182 +1,157 @@
-
 package com.mycompany.proyectou3aalg.algorithms;
 
-
+import com.mycompany.proyectou3aalg.util.EstadoDFS;
 import com.mycompany.proyectou3aalg.util.Arista;
 import com.mycompany.proyectou3aalg.util.Ciudad;
 import com.mycompany.proyectou3aalg.util.Grafo;
+import com.mycompany.proyectou3aalg.view.VisualizadorGrafo;
+import java.awt.Font;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Queue;
+import javax.swing.JFrame;
+import javax.swing.JScrollPane;
+import javax.swing.JTextArea;
+import javax.swing.SwingWorker;
 
 /**
- * Implementación del algoritmo BFS (Breadth-First Search)
- * para recorrer el grafo de ciudades
+ * Implementación del recorrido BFS con visualización gráfica
+ *
+ * @author Elite
  */
 public class BFS {
-    
+
     private Grafo grafo;
+    private VisualizadorGrafo visualizador;
+    private Map<Ciudad, EstadoDFS> estados = new HashMap<>();
+    private List<Ciudad> ordenDescubrimiento = new ArrayList<>();
     private Map<Ciudad, List<Ciudad>> listaAdyacencia;
-    
-    public BFS(Grafo grafo) {
+
+    public BFS(Grafo grafo, VisualizadorGrafo visualizador) {
         this.grafo = grafo;
+        this.visualizador = visualizador;
         this.listaAdyacencia = construirListaAdyacencia();
     }
-    
+
     /**
      * Construye la lista de adyacencia a partir de las aristas del grafo
      */
     private Map<Ciudad, List<Ciudad>> construirListaAdyacencia() {
         Map<Ciudad, List<Ciudad>> adj = new HashMap<>();
-        
+
         // Inicializar listas para cada ciudad
         for (Ciudad ciudad : grafo.getCiudades()) {
             adj.put(ciudad, new ArrayList<>());
         }
-        
+
         // Agregar conexiones bidireccionales
         for (Arista arista : grafo.getAristas()) {
             adj.get(arista.getOrigen()).add(arista.getDestino());
             adj.get(arista.getDestino()).add(arista.getOrigen());
         }
-        
+
         return adj;
     }
-    
-    /**
-     * Ejecuta el recorrido BFS desde una ciudad inicial
-     * @param inicio Ciudad desde donde comenzar el recorrido
-     * @return Lista con el orden de visita de las ciudades
-     */
-    public List<Ciudad> recorrer(Ciudad inicio) {
-        List<Ciudad> recorrido = new ArrayList<>();
-        Map<Ciudad, Boolean> visitado = new HashMap<>();
-        Queue<Ciudad> cola = new LinkedList<>();
-        
-        // Marcar todas las ciudades como no visitadas
-        for (Ciudad ciudad : grafo.getCiudades()) {
-            visitado.put(ciudad, false);
+
+    public void ejecutarDesde(Ciudad inicio) {
+        // Inicializar todos los estados
+        for (Ciudad c : grafo.getCiudades()) {
+            estados.put(c, new EstadoDFS());
         }
-        
-        // Comenzar desde la ciudad inicial
+
+        SwingWorker<Void, Map<Ciudad, EstadoDFS>> worker = new SwingWorker<>() {
+            @Override
+            protected Void doInBackground() {
+                bfsVisit(inicio);
+                return null;
+            }
+
+            @Override
+            protected void done() {
+                mostrarVentanaDescubrimiento();
+            }
+        };
+
+        worker.execute();
+    }
+
+    private void bfsVisit(Ciudad inicio) {
+        Queue<Ciudad> cola = new LinkedList<>();
+
+        // Marcar el nodo inicial como descubierto (GRAY)
+        EstadoDFS estadoInicio = estados.get(inicio);
+        estadoInicio.color = EstadoDFS.Color.GRAY;
+        estadoInicio.descubrimiento = 0;
+        ordenDescubrimiento.add(inicio);
+
         cola.offer(inicio);
-        visitado.put(inicio, true);
-        
+        visualizador.actualizarColores(estados);
+        esperar(350);
+
         while (!cola.isEmpty()) {
             Ciudad actual = cola.poll();
-            recorrido.add(actual);
-            
-            // Visitar todas las ciudades adyacentes
+            EstadoDFS estadoActual = estados.get(actual);
+
+            // Procesar todos los vecinos adyacentes
             for (Ciudad vecino : listaAdyacencia.get(actual)) {
-                if (!visitado.get(vecino)) {
-                    visitado.put(vecino, true);
+                EstadoDFS estadoVecino = estados.get(vecino);
+
+                // Si el vecino no ha sido descubierto
+                if (estadoVecino.color == EstadoDFS.Color.WHITE) {
+                    estadoVecino.color = EstadoDFS.Color.GRAY;
+                    estadoVecino.padre = actual;
+                    estadoVecino.descubrimiento = ordenDescubrimiento.size();
+                    ordenDescubrimiento.add(vecino);
+
                     cola.offer(vecino);
+                    visualizador.actualizarColores(estados);
+                    esperar(350);
                 }
             }
+
+            // Marcar el nodo actual como completamente procesado (BLACK)
+            estadoActual.color = EstadoDFS.Color.BLACK;
+            visualizador.actualizarColores(estados);
+            esperar(500);
         }
-        
-        return recorrido;
     }
-    
-    /**
-     * Ejecuta BFS y devuelve información detallada del recorrido
-     * @param inicio Ciudad inicial
-     * @return ResultadoBFS con información del recorrido
-     */
-    public ResultadoBFS recorridoDetallado(Ciudad inicio) {
-        List<Ciudad> recorrido = new ArrayList<>();
-        Map<Ciudad, Boolean> visitado = new HashMap<>();
-        Map<Ciudad, Ciudad> padre = new HashMap<>();
-        Map<Ciudad, Integer> nivel = new HashMap<>();
-        Queue<Ciudad> cola = new LinkedList<>();
-        
-        // Inicializar estructuras
-        for (Ciudad ciudad : grafo.getCiudades()) {
-            visitado.put(ciudad, false);
-            padre.put(ciudad, null);
-            nivel.put(ciudad, -1);
+
+    private void esperar(int ms) {
+        try {
+            Thread.sleep(ms);
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
         }
-        
-        // Comenzar BFS
-        cola.offer(inicio);
-        visitado.put(inicio, true);
-        nivel.put(inicio, 0);
-        
-        while (!cola.isEmpty()) {
-            Ciudad actual = cola.poll();
-            recorrido.add(actual);
-            
-            for (Ciudad vecino : listaAdyacencia.get(actual)) {
-                if (!visitado.get(vecino)) {
-                    visitado.put(vecino, true);
-                    padre.put(vecino, actual);
-                    nivel.put(vecino, nivel.get(actual) + 1);
-                    cola.offer(vecino);
-                }
-            }
-        }
-        
-        return new ResultadoBFS(recorrido, padre, nivel);
     }
-    
-    /**
-     * Clase interna para almacenar resultados detallados del BFS
-     */
-    public static class ResultadoBFS {
-        private List<Ciudad> recorrido;
-        private Map<Ciudad, Ciudad> padre;
-        private Map<Ciudad, Integer> nivel;
-        
-        public ResultadoBFS(List<Ciudad> recorrido, Map<Ciudad, Ciudad> padre, 
-                           Map<Ciudad, Integer> nivel) {
-            this.recorrido = recorrido;
-            this.padre = padre;
-            this.nivel = nivel;
+
+    private void mostrarVentanaDescubrimiento() {
+        JFrame ventana = new JFrame("Orden de descubrimiento BFS");
+        JTextArea area = new JTextArea();
+        area.setEditable(false);
+        area.setFont(new Font("Monospaced", Font.PLAIN, 12));
+
+        area.append("=== Recorrido BFS ===\n");
+        area.append("Orden de visita:\n\n");
+
+        for (int i = 0; i < ordenDescubrimiento.size(); i++) {
+            Ciudad c = ordenDescubrimiento.get(i);
+            area.append(String.format("%d. %s\n", i + 1, c.getNombre()));
         }
-        
-        public List<Ciudad> getRecorrido() {
-            return recorrido;
-        }
-        
-        public Map<Ciudad, Ciudad> getPadre() {
-            return padre;
-        }
-        
-        public Map<Ciudad, Integer> getNivel() {
-            return nivel;
-        }
-        
-        /**
-         * Obtiene el camino desde el inicio hasta una ciudad específica
-         */
-        public List<Ciudad> obtenerCamino(Ciudad destino) {
-            List<Ciudad> camino = new ArrayList<>();
-            Ciudad actual = destino;
-            
-            while (actual != null) {
-                camino.add(0, actual);
-                actual = padre.get(actual);
+
+        ventana.add(new JScrollPane(area));
+        ventana.setSize(500, 600);
+        ventana.setLocationRelativeTo(null);
+        ventana.setVisible(true);
+
+        ventana.addWindowListener(new WindowAdapter() {
+            public void windowClosing(WindowEvent e) {
+                visualizador.restaurarColores();
             }
-            
-            return camino;
-        }
-        
-        @Override
-        public String toString() {
-            StringBuilder sb = new StringBuilder();
-            sb.append("=== Recorrido BFS ===\n");
-            sb.append("Orden de visita:\n");
-            
-            for (int i = 0; i < recorrido.size(); i++) {
-                Ciudad ciudad = recorrido.get(i);
-                sb.append(String.format("%d. %s (Nivel: %d)\n", 
-                    i + 1, ciudad.getNombre(), nivel.get(ciudad)));
-            }
-            
-            return sb.toString();
-        }
+        });
     }
 }

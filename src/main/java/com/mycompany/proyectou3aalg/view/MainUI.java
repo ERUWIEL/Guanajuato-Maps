@@ -127,8 +127,6 @@ public class MainUI extends javax.swing.JFrame {
     }//GEN-LAST:event_btnReporteComplejidadActionPerformed
 
     private void btnRecorridoDFSActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRecorridoDFSActionPerformed
-        // TODO add your handling code here:
-        
         if (grafoActual == null) {
             JOptionPane.showMessageDialog(this, "No hay grafo inicializado", "Error", JOptionPane.ERROR_MESSAGE);
             return;
@@ -138,7 +136,6 @@ public class MainUI extends javax.swing.JFrame {
                 .map(c -> c.getNombre())
                 .toArray(String[]::new);
 
-        
         String ciudadSeleccionada = (String) JOptionPane.showInputDialog(
                 this,
                 "Selecciona la ciudad inicial para el recorrido DFS:",
@@ -148,24 +145,22 @@ public class MainUI extends javax.swing.JFrame {
                 nombresCiudades,
                 nombresCiudades[0]
         );
-        
+
         if (ciudadSeleccionada != null) {
             Ciudad inicio = grafoActual.getCiudades().stream()
                     .filter(c -> c.getNombre().equals(ciudadSeleccionada))
                     .findFirst()
                     .orElse(null);
-        
+
             if (inicio != null) {
                 // Ejecutar BFS
                 DFSRecorrido dfs = new DFSRecorrido(grafoActual, panel);
                 dfs.ejecutarDesde(inicio);
 
-                
             }
         }
 
-      
-        
+
     }//GEN-LAST:event_btnRecorridoDFSActionPerformed
 
     private void btnrecorridoBFSActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnrecorridoBFSActionPerformed
@@ -195,12 +190,9 @@ public class MainUI extends javax.swing.JFrame {
                     .orElse(null);
 
             if (inicio != null) {
-                // Ejecutar BFS
-                BFS bfs = new BFS(grafoActual);
-                BFS.ResultadoBFS resultado = bfs.recorridoDetallado(inicio);
-
-                // Mostrar resultados
-                mostrarResultadosBFS(resultado);
+                // Ejecutar BFS con visualización
+                BFS bfs = new BFS(grafoActual, panel);
+                bfs.ejecutarDesde(inicio);
             }
         }
     }//GEN-LAST:event_btnrecorridoBFSActionPerformed
@@ -210,10 +202,8 @@ public class MainUI extends javax.swing.JFrame {
         //Kruskal MST
         Kruskal_MST_Recorrido mstk = new Kruskal_MST_Recorrido(grafoActual, panel);
         mstk.ejecutar();
-        
-        
-        
-        
+
+
     }//GEN-LAST:event_btnMSTActionPerformed
 
     private void btnRutaMásCortaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRutaMásCortaActionPerformed
@@ -242,8 +232,7 @@ public class MainUI extends javax.swing.JFrame {
                     .filter(c -> c.getNombre().equals(ciudadInicio))
                     .findFirst()
                     .orElse(null);
-            
-            
+
             String ciudadDestino = (String) JOptionPane.showInputDialog(
                     this,
                     "Selecciona la ciudad destino:",
@@ -253,21 +242,19 @@ public class MainUI extends javax.swing.JFrame {
                     nombresCiudades,
                     nombresCiudades[0]
             );
-            
+
             Ciudad destino = grafoActual.getCiudades().stream()
                     .filter(c -> c.getNombre().equals(ciudadInicio))
                     .findFirst()
                     .orElse(null);
-        
-        
-       
+
             if (origen != null && destino != null) {
                 DijkstraRecorrido dijkstra = new DijkstraRecorrido(grafoActual, panel, origen, destino);
                 dijkstra.ejecutarDijkstra();
             }
-        
+
         }
-            
+
     }//GEN-LAST:event_btnRutaMásCortaActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -306,21 +293,6 @@ public class MainUI extends javax.swing.JFrame {
         return grafo;
     }
 
-    private void mostrarResultadosBFS(BFS.ResultadoBFS resultado) {
-        JDialog dialog = new JDialog(this, "Resultados BFS", true);
-        dialog.setSize(500, 600);
-        dialog.setLocationRelativeTo(this);
-
-        JTextArea textArea = new JTextArea();
-        textArea.setEditable(false);
-        textArea.setFont(new Font("Monospaced", Font.PLAIN, 12));
-        textArea.setText(resultado.toString());
-
-        JScrollPane scrollPane = new JScrollPane(textArea);
-        dialog.add(scrollPane);
-        dialog.setVisible(true);
-    }
-
     //Genera posiciones para el Jframe que simulan la geografía del estado de Guanajuato
     public int[][] generarPosiciones(double[][] coordenadas) {
         //Convertir coordenadas geograficas a pixeles
@@ -356,10 +328,8 @@ public class MainUI extends javax.swing.JFrame {
 //    public GrafoPanel getPanel() {
 //        return panel;
 //    }
-    
-    public void setPanel(GrafoPanel panel){
+    public void setPanel(GrafoPanel panel) {
         this.panel = panel;
     }
 
-    
 }
