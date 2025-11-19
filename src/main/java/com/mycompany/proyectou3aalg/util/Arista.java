@@ -12,7 +12,7 @@ public class Arista {
     
    private Ciudad origen;
    private Ciudad destino;
-   private int peso;
+   public int peso;
     
     
     public Arista(Ciudad origen, Ciudad destino, int peso){

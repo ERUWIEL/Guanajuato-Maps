@@ -22,6 +22,24 @@ public class Ciudad {
         return nombre;
     }
     
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (!(o instanceof Ciudad)) {
+            return false;
+        }
+        Ciudad c = (Ciudad) o;
+        return nombre.equalsIgnoreCase(c.nombre);
+    }
+
+    @Override
+    public int hashCode() {
+        return nombre.toLowerCase().hashCode();
+    }
+    
+    
     
     
 }

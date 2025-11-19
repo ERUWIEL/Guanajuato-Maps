@@ -2,6 +2,7 @@ package com.mycompany.proyectou3aalg.view;
 
 import com.mycompany.proyectou3aalg.algorithms.BFS;
 import com.mycompany.proyectou3aalg.algorithms.DFSRecorrido;
+import com.mycompany.proyectou3aalg.algorithms.DijkstraRecorrido;
 import com.mycompany.proyectou3aalg.algorithms.Kruskal_MST_Recorrido;
 import com.mycompany.proyectou3aalg.util.Ciudad;
 import com.mycompany.proyectou3aalg.util.Grafo;
@@ -80,6 +81,11 @@ public class MainUI extends javax.swing.JFrame {
         menuFuncionalidad.add(btnMST);
 
         btnRutaMásCorta.setText("Ruta más corta");
+        btnRutaMásCorta.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnRutaMásCortaActionPerformed(evt);
+            }
+        });
         menuFuncionalidad.add(btnRutaMásCorta);
 
         jMenuBar1.add(menuFuncionalidad);
@@ -209,6 +215,60 @@ public class MainUI extends javax.swing.JFrame {
         
         
     }//GEN-LAST:event_btnMSTActionPerformed
+
+    private void btnRutaMásCortaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRutaMásCortaActionPerformed
+        // TODO add your handling code here:
+        if (grafoActual == null) {
+            JOptionPane.showMessageDialog(this, "No hay grafo inicializado", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        String[] nombresCiudades = grafoActual.getCiudades().stream()
+                .map(c -> c.getNombre())
+                .toArray(String[]::new);
+
+        String ciudadInicio = (String) JOptionPane.showInputDialog(
+                this,
+                "Selecciona la ciudad inicial:",
+                "Cálculo de ruta más corta",
+                JOptionPane.QUESTION_MESSAGE,
+                null,
+                nombresCiudades,
+                nombresCiudades[0]
+        );
+
+        if (ciudadInicio != null) {
+            Ciudad origen = grafoActual.getCiudades().stream()
+                    .filter(c -> c.getNombre().equals(ciudadInicio))
+                    .findFirst()
+                    .orElse(null);
+            
+            
+            String ciudadDestino = (String) JOptionPane.showInputDialog(
+                    this,
+                    "Selecciona la ciudad destino:",
+                    "Cálculo de ruta más corta",
+                    JOptionPane.QUESTION_MESSAGE,
+                    null,
+                    nombresCiudades,
+                    nombresCiudades[0]
+            );
+            
+            Ciudad destino = grafoActual.getCiudades().stream()
+                    .filter(c -> c.getNombre().equals(ciudadInicio))
+                    .findFirst()
+                    .orElse(null);
+        
+        
+       
+            if (origen != null && destino != null) {
+                DijkstraRecorrido dijkstra = new DijkstraRecorrido(grafoActual, panel, origen, destino);
+                dijkstra.ejecutarDijkstra();
+            }
+        
+        }
+            
+    }//GEN-LAST:event_btnRutaMásCortaActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenuItem btnMST;

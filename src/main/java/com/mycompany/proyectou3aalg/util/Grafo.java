@@ -37,7 +37,18 @@ public class Grafo {
     public List<Arista> getAristas() { return aristas; }
     
     
-    
+    public List<Arista> getAdyacentes(Ciudad u) {
+        List<Arista> adyacentes = new ArrayList<>();
+        for (Arista a : aristas) {
+            if (a.getOrigen().equals(u)|| a.getDestino().equals(u)) {
+                adyacentes.add(a); // grafo dirigido
+            }    
+//          } } else if (a.getDestino().equals(u)) {
+//                adyacentes.add(a); // grafo no dirigido
+//            }
+        }
+        return adyacentes;
+    }
     
     
     
