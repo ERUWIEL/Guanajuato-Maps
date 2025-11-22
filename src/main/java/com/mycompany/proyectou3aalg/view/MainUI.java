@@ -4,10 +4,15 @@ import com.mycompany.proyectou3aalg.algorithms.BFS;
 import com.mycompany.proyectou3aalg.algorithms.DFSRecorrido;
 import com.mycompany.proyectou3aalg.algorithms.DijkstraRecorrido;
 import com.mycompany.proyectou3aalg.algorithms.Kruskal_MST_Recorrido;
+import com.mycompany.proyectou3aalg.util.Arista;
 import com.mycompany.proyectou3aalg.util.Ciudad;
 import com.mycompany.proyectou3aalg.util.Grafo;
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+import java.util.Arrays;
+import javax.swing.table.DefaultTableModel;
 
 /**
  *
@@ -96,6 +101,11 @@ public class MainUI extends javax.swing.JFrame {
         menuOtros.setText("Otros");
 
         btnTablaNA.setText("Tabla Nodos-Aristas");
+        btnTablaNA.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnTablaNAActionPerformed(evt);
+            }
+        });
         menuOtros.add(btnTablaNA);
 
         btnReporteComplejidad.setText("Reporte de complejidad");
@@ -127,6 +137,37 @@ public class MainUI extends javax.swing.JFrame {
 
     private void btnReporteComplejidadActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnReporteComplejidadActionPerformed
         // TODO add your handling code here:
+        
+        JFrame ventana = new JFrame("Complejidad Temporal de Algoritmos Implementados");
+        ventana.setSize(500, 600);
+
+        ventana.setLocationRelativeTo(null);
+        
+
+        // Datos de la tabla
+        String[] columnas = {"Algoritmo", "Complejidad Temporal"};
+        Object[][] datos = {
+            {"BFS", "O(V + E)"},
+            {"DFS", "O(V + E)"},
+            {"Kruskal", "O(E log E)"},
+            {"Dijkstra", "O((V + E) log V)"}
+        };
+
+        // Modelo de tabla
+        DefaultTableModel modelo = new DefaultTableModel(datos, columnas);
+        JTable tabla = new JTable(modelo);
+
+        // Ajustes visuales
+        tabla.setFont(new Font("Arial", Font.PLAIN, 14));
+        tabla.setRowHeight(25);
+        tabla.getTableHeader().setFont(new Font("Arial", Font.BOLD, 14));
+
+        // Scroll para la tabla
+        JScrollPane scrollPane = new JScrollPane(tabla);
+        ventana.add(scrollPane, BorderLayout.CENTER);
+     
+        ventana.setVisible(true);
+        
     }//GEN-LAST:event_btnReporteComplejidadActionPerformed
 
     private void btnRecorridoDFSActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRecorridoDFSActionPerformed
@@ -255,6 +296,66 @@ public class MainUI extends javax.swing.JFrame {
             }
         }
     }//GEN-LAST:event_btnRutaMásCortaActionPerformed
+
+    private void btnTablaNAActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTablaNAActionPerformed
+        // TODO add your handling code here:
+        JFrame ventana = new JFrame("Complejidad Temporal de Algoritmos Implementados");
+        ventana.setSize(500, 600);
+
+        ventana.setLocationRelativeTo(null);
+        
+        //Encabezado
+        String[] columnas = new String[grafoActual.getCiudades().size() + 1];
+        columnas[0] = "Ciudades";
+        for (int i = 0; i < grafoActual.getCiudades().size(); i++) {
+            columnas[i + 1] = grafoActual.getCiudades().get(i).getNombre();
+        }
+        //Inicializar matriz 
+        int[][] matrizPesos = new int[30][30];
+        for (int i = 0; i < 30; i++) {
+            Arrays.fill(matrizPesos[i], Integer.MAX_VALUE);
+            matrizPesos[i][i] = 0; // distancia a sí mismo = 0
+        }
+        
+        for(Arista a: grafoActual.getAristas()){
+            int i = grafoActual.getCiudades().indexOf(a.getOrigen());
+            int j = grafoActual.getCiudades().indexOf(a.getDestino());
+            if (i != -1 && j != -1) {
+                matrizPesos[i][j] = a.getPeso();
+                matrizPesos[j][i] = a.getPeso(); //Por ser grafo no dirigido
+            }
+        }
+        
+        Object[][] datos = new Object[30][30 + 1];
+        for (int i = 0; i < 30; i++) {
+            datos[i][0] = grafoActual.getCiudades().get(i).getNombre();
+            for (int j = 0; j < 30; j++) {
+                datos[i][j + 1] = (matrizPesos[i][j] == Integer.MAX_VALUE) ? "0" : matrizPesos[i][j];
+            }
+        }
+
+        // Crear modelo y tabla
+        DefaultTableModel modelo = new DefaultTableModel(datos, columnas);
+        JTable tabla = new JTable(modelo);
+        tabla.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
+        
+        for (int i = 0; i < tabla.getColumnCount(); i++) {
+            tabla.getColumnModel().getColumn(i).setPreferredWidth(120); // ancho fijo
+        }
+
+        // Ajustes visuales
+        tabla.setFont(new Font("Arial", Font.PLAIN, 12));
+        tabla.setRowHeight(20);
+        tabla.getTableHeader().setFont(new Font("Arial", Font.BOLD, 12));
+        
+        
+        JScrollPane scrollPane = new JScrollPane(tabla, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, 
+                JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+        ventana.add(scrollPane, BorderLayout.CENTER);
+        
+        ventana.setVisible(true);
+        
+    }//GEN-LAST:event_btnTablaNAActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenuItem btnMST;
