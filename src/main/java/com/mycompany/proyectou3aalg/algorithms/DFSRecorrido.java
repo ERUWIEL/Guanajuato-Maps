@@ -25,8 +25,13 @@ import javax.swing.SwingWorker;
 
 /**
  *
- * @author Elite
+ * @author Héctor Alonso 252039
+ * @author Erubiel Flores
+ *
+ * Implementación de busqueda por profundidad con visualización gráfica
  */
+
+
 public class DFSRecorrido {
     
     private Grafo grafo;
@@ -36,18 +41,21 @@ public class DFSRecorrido {
     private int tiempo = 0;
     private LinkedList<Ciudad> cola = new LinkedList<>();
     
+    //Constructor de la clase
     public DFSRecorrido(Grafo grafo, VisualizadorGrafo visualizador) {
         this.grafo = grafo;
         this.visualizador = visualizador;
     }
-
+    //DFS 
     public void ejecutarDesde(Ciudad semilla) {
         for (Ciudad c : grafo.getCiudades()) {
             estados.put(c, new EstadoDFS());
             cola.add(c);
         }
-
+        
+        
         SwingWorker<Void, Map<Ciudad, EstadoDFS>> worker = new SwingWorker<>() {
+            //Ejecución del algoritmo en un hilo secundario
             @Override
             protected Void doInBackground() {
                 dfsVisit(semilla);
@@ -57,16 +65,16 @@ public class DFSRecorrido {
                     if (estados.get(c).color == EstadoDFS.Color.WHITE) {
                         dfsVisit(c);
                     }
-                    cola.removeFirst(); // consumir determinísticamente
+                    cola.removeFirst(); 
                 }
                 
                 return null;
             }
-
+            
+            //Regresa al hilo principal para mostrar resultados
             @Override
             protected void done() {
                 mostrarVentanaDescubrimiento();
-                System.out.println(cola.size());
             }
         };
 
@@ -110,7 +118,8 @@ public class DFSRecorrido {
         } catch (InterruptedException e) {
         }
     }
-
+    
+    //Método para mostrar el orden de descubrimiento de nodos en una ventana nueva.
     private void mostrarVentanaDescubrimiento() {
         JFrame ventana = new JFrame("Orden de descubrimiento DFS");
         JTextArea area = new JTextArea();

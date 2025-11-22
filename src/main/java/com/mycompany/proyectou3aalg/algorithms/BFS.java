@@ -22,7 +22,9 @@ import javax.swing.SwingWorker;
 /**
  * Implementación del recorrido BFS con visualización gráfica
  *
- * @author Elite
+ * @author Héctor Alonso 252039
+ * @author Erubiel Flores
+ * 
  */
 public class BFS {
 

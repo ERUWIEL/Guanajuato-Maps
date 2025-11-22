@@ -20,7 +20,10 @@ import javax.swing.JPanel;
 
 /**
  *
- * @author Elite
+ * @author @author Héctor Alonso 252039
+ * @author Erubiel Flores
+ *
+ * Clase que dibuja el grafo en la ventana del programa
  */
 public class GrafoPanel extends JPanel implements VisualizadorGrafo {
 
@@ -43,7 +46,7 @@ public class GrafoPanel extends JPanel implements VisualizadorGrafo {
         setPreferredSize(new Dimension(1000, 800));
     }
 
-    // ========================= BFS =============================
+    // ========================= BFS, DFS =============================
     public void actualizarColores(Map<Ciudad, EstadoDFS> estados) {
         this.estadosDFS = estados;
         repaint();

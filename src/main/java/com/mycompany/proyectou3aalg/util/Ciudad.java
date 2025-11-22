@@ -6,7 +6,10 @@ package com.mycompany.proyectou3aalg.util;
 
 /**
  *
- * @author Elite
+ * @author Héctor Alonso 252039
+ * @author Erubiel Flores
+ *
+ * Clase que representa una población dentro de una entidad federativa.
  */
 public class Ciudad {
     

@@ -8,7 +8,10 @@ import com.mycompany.proyectou3aalg.util.Ciudad;
 
 /**
  *
- * @author Elite
+ * @author Héctor Alonso 252039
+ * @author Erubiel Flores
+ *
+ * Clase que define el estado de un nodo durante el recorrido por profundidad
  */
 public class EstadoDFS {
     

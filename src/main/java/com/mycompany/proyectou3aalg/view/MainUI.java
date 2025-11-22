@@ -11,7 +11,10 @@ import java.awt.*;
 
 /**
  *
- * @author Elite
+ * @author Héctor Alonso 252039
+ * @author Erubiel Flores
+ *
+ * Clase que genera la interfaz gráfica del programa
  */
 public class MainUI extends javax.swing.JFrame {
 
@@ -266,6 +269,12 @@ public class MainUI extends javax.swing.JFrame {
     private javax.swing.JMenu subMenuRecorridos;
     // End of variables declaration//GEN-END:variables
 
+    /**
+     * Método que crea un grafo a partir de una matriz de adyacencias y un arreglo de nombres de ciudades
+     * @param nombres
+     * @param matrizAristas
+     * @return 
+     */
     public Grafo inicializarCiudadesYGrafo(String[] nombres, int[][] matrizAristas) {
         Grafo grafo = new Grafo();
         //Crea un arreglo de ciudades
@@ -288,7 +297,12 @@ public class MainUI extends javax.swing.JFrame {
         this.grafoActual = grafo;
         return grafo;
     }
-
+    /**
+     * Método que crea posiciones en pixeles para los nodos del grafo a partir de una matriz con coordenadas geográficas
+     * aproximadas.
+     * @param coordenadas
+     * @return 
+     */
     //Genera posiciones para el Jframe que simulan la geografía del estado de Guanajuato
     public int[][] generarPosiciones(double[][] coordenadas) {
         //Convertir coordenadas geograficas a pixeles

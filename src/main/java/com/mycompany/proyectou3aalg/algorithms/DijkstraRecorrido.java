@@ -18,7 +18,8 @@ import javax.swing.SwingWorker;
  * Implementación animada del algoritmo de Dijkstra, siguiendo el mismo estilo
  * visual que BFS y Kruskal.
  *
- * @author Elite
+ * @author Héctor Alonso 252039
+ * @author Erubiel Flores
  */
 public class DijkstraRecorrido {
 

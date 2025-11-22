@@ -10,7 +10,10 @@ import java.util.Map;
 
 /**
  *
- * @author Elite
+ * @author Héctor Alonso 252039
+ * @author Erubiel Flores
+ *
+ * Interface que designa los métodos para modificar y restaurar la visualización del grafo
  */
 public interface VisualizadorGrafo {
     void actualizarColores(Map<Ciudad, EstadoDFS> estados);

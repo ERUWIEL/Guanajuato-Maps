@@ -23,7 +23,8 @@ import javax.swing.SwingWorker;
  * Implementación de Kruskal con visualización gráfica paso a paso
  * siguiendo el mismo estilo del BFS mostrado.
  *
- * @author Elite
+ * @author Héctor Alonso 252039
+ * @author Erubiel Flores
  */
 public class Kruskal_MST_Recorrido {
 
