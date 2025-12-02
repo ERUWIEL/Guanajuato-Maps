@@ -26,7 +26,7 @@ import javax.swing.SwingWorker;
 /**
  *
  * @author Héctor Alonso 252039
- * @author Erubiel Flores
+ * @author Erubiel Flores 252389
  *
  * Implementación de busqueda por profundidad con visualización gráfica
  */

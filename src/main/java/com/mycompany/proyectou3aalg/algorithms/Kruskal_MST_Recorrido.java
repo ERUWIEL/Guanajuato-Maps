@@ -24,7 +24,7 @@ import javax.swing.SwingWorker;
  * siguiendo el mismo estilo del BFS mostrado.
  *
  * @author Héctor Alonso 252039
- * @author Erubiel Flores
+ * @author Erubiel Flores 252389
  */
 public class Kruskal_MST_Recorrido {
 

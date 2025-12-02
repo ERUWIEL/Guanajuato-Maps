@@ -19,7 +19,7 @@ import javax.swing.SwingWorker;
  * visual que BFS y Kruskal.
  *
  * @author Héctor Alonso 252039
- * @author Erubiel Flores
+ * @author Erubiel Flores 252389
  */
 public class DijkstraRecorrido {
 
@@ -47,11 +47,11 @@ public class DijkstraRecorrido {
             protected Void doInBackground() {
 
                 inicializarDistancias();
-
+                
                 PriorityQueue<Ciudad> pq = new PriorityQueue<>(
                         Comparator.comparingInt(distancias::get)
                 );
-
+                
                 pq.add(origen);
 
                 while (!pq.isEmpty()) {
